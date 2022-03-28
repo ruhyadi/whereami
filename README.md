@@ -1,2 +1,2 @@
-# whereami
-Know your location based on image from your city
+# whereiam
+Where I'am?
