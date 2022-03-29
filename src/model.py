@@ -41,7 +41,8 @@ class LitModel(LightningModule):
         logits = self(x)
         loss = self.criterion(logits, y)
         preds = torch.argmax(logits, dim=1)
-        return loss, preds, y
+        targets = torch.argmax(y.squeeze(), dim=1)
+        return loss, preds, targets
 
     def training_step(self, batch: Any, batch_idx: int):
         loss, preds, targets = self.step(batch)

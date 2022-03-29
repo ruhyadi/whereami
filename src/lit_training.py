@@ -22,7 +22,7 @@ from utils import WandbLog
 def train(
     dataset_path='data',
     last_model='weights',
-    num_class=3,
+    num_class=2,
     fpm=20,
     epochs=10, 
     batch_size=32,
@@ -33,7 +33,7 @@ def train(
 
     # model
     resnet18 = models.resnet18(pretrained=True)
-    resnet18.fc = nn.Linear(in_features=resnet18.fc.in_features, out_features=3)
+    resnet18.fc = nn.Linear(in_features=resnet18.fc.in_features, out_features=num_class)
     model = LitModel(resnet18)
 
     # checkpoint callback
@@ -62,7 +62,7 @@ def train(
         auto_lr_find=True, # auto learning rate finder
         benchmark=True, # speedup if input size same
         check_val_every_n_epoch=5, # check val every n epoch
-        callbacks=[checkpoint_callback, wandblog],
+        callbacks=[checkpoint_callback],
         fast_dev_run=fast_dev_run,
         gpus=-1, # select available GPU
         logger=[comet_logger, wandb_logger],
@@ -92,13 +92,13 @@ def main():
     parser = argparse.ArgumentParser(description='Training model')
     parser.add_argument('--dataset_path', type=str, default='data', help='dataset path')
     parser.add_argument('--last_model', type=str, default='weights', help='last model path')
-    parser.add_argument('--num_class', type=int, default=3, help='number of class')    
+    parser.add_argument('--num_class', type=int, default=2, help='number of class')    
     parser.add_argument('--fpm', type=int, default=20, help='frame per minute')
     parser.add_argument('--epochs', type=int, default=10, help='num of epochs')
     parser.add_argument('--batch_size', type=int, default=32, help='num of batch size')    
     parser.add_argument('--fast_dev_run', type=bool, default=False, help='debugging run')
-    parser.add_argument('--comet_api', type=str, default='xxx', help='comet ml api')
-    parser.add_argument('--wandb_api', type=str, default='xxx', help='wandb api')
+    parser.add_argument('--comet_api', type=str, default='IFsibHtChMnB2b5FuZzhiMswT', help='comet ml api')
+    parser.add_argument('--wandb_api', type=str, default='817aa606c05b35848fbda862607bdc175605121e', help='wandb api')
 
     args = parser.parse_args()
 

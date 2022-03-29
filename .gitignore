@@ -130,3 +130,5 @@ dmypy.json
 
 # ignore video
 *.mp4
+/data/**/*.png
+/data/**/*.jpg
