@@ -25,7 +25,7 @@ class LitModel(LightningModule):
         # model arc
         self.model = model
         # loss function
-        self.criterion = torch.nn.CrossEntropyLoss()
+        self.criterion = torch.nn.MSELoss()
 
         # accuracy metrics
         self.train_acc = Accuracy()
