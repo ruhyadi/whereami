@@ -23,6 +23,7 @@ def train(
     last_model='weights',
     fpm=20,
     epochs=10, 
+    batch_size=32,
     fast_dev_run=False,
     comet_api='xxx',
     wandb_api='xxx'
@@ -55,7 +56,6 @@ def train(
     # trainer
     trainer = Trainer(
         auto_select_gpus=True,
-        auto_scale_batch_size='binsearch', # auto scaling batch size, need to tune
         auto_lr_find=True, # auto learning rate finder
         benchmark=True, # speedup if input size same
         check_val_every_n_epoch=5, # check val every n epoch
@@ -67,20 +67,22 @@ def train(
         )
 
     # tune lr and batch_size
-    trainer.tune(model)
+    # trainer.tune(model)
 
     # dataset
     dataset = LitWhereAmIDataset(
         data_dir=dataset_path,
         fpm=fpm,
         train_val_test_split=[0.8, 0.1, 0.1],
+        batch_size=batch_size,
     )
+
+    # check last model
 
     # fit trainer
     trainer.fit(
         model=model,
-        datamodule=dataset,
-        ckpt_path=last_model
+        datamodule=dataset
     )
 
 def main():
@@ -89,6 +91,7 @@ def main():
     parser.add_argument('--last_model', type=str, default='weights', help='last model path')
     parser.add_argument('--fpm', type=int, default=20, help='frame per minute')
     parser.add_argument('--epochs', type=int, default=10, help='num of epochs')
+    parser.add_argument('--batch_size', type=int, default=32, help='num of batch size')    
     parser.add_argument('--fast_dev_run', type=bool, default=False, help='debugging run')
     parser.add_argument('--comet_api', type=str, default='xxx', help='comet ml api')
     parser.add_argument('--wandb_api', type=str, default='xxx', help='wandb api')

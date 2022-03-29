@@ -16,7 +16,8 @@ class LitModel(LightningModule):
     def __init__(
         self, 
         model: torch.nn.Module, 
-        learning_rate: float =0.001, 
+        learning_rate: float = 0.001, 
+        batch_size: int = 32
         ):
         super().__init__()
         # save hyperparamters

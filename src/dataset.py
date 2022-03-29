@@ -55,7 +55,7 @@ class LitWhereAmIDataset(LightningDataModule):
             dataset = WhereIamDataset(self.hparams.data_dir, self.hparams.fpm, self.transforms)
             trainset = int(self.trainsize * len(dataset))
             valset = int(self.valsize * len(dataset))
-            testsize = int(self.testsize * len(dataset))
+            testsize = int(len(dataset) - trainset - valset)
             self.data_train, self.data_val, self.data_test = random_split(
                 dataset=dataset,
                 lengths=[trainset, valset, testsize]
@@ -180,20 +180,12 @@ class WhereIamDataset(Dataset):
         return IMAGES, LABELS
 
 if __name__ == "__main__":
-    # transforms
-    train_transforms = transforms.Compose([
-        transforms.ToTensor()
-    ])
+    
+    dataset = LitWhereAmIDataset(
+        data_dir='/home/didi/Repository/whereami/data',
+        fpm=30,
+        train_val_test_split=[0.8, 0.1, 0.1]
+    )
 
-    dataset = WhereIamDataset('/home/didi/Repository/whereiam/data', 50, train_transforms)
-    # trainset
-    train_set = int(0.9 * len(dataset))
-    val_set = int(len(dataset) - train_set)
-    trainset, valset = random_split(dataset, [train_set, val_set])
+    print(dataset)
 
-    train_loader = DataLoader(trainset, batch_size=10, shuffle=True)
-    val_loader = DataLoader(valset, batch_size=10, shuffle=True)
-
-    for i, batch in enumerate(train_loader):
-        img, label = batch
-        print(label)
