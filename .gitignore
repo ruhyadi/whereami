@@ -132,3 +132,6 @@ dmypy.json
 *.mp4
 /data/**/*.png
 /data/**/*.jpg
+
+/weights/*.ckpt
+/wandb

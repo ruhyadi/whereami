@@ -38,6 +38,8 @@ class LitModel(LightningModule):
 
     def step(self, batch: Any):
         x, y = batch
+        x = x.float()
+        y = y.float()
         logits = self(x)
         loss = self.criterion(logits, y)
         preds = torch.argmax(logits, dim=1)

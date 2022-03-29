@@ -38,10 +38,10 @@ def train(
 
     # checkpoint callback
     checkpoint_callback = ModelCheckpoint(
-        monitor='val/acc', # monitor log see model.py
+        monitor='train/loss', # monitor log see model.py
         dirpath='weights',
         filename='model_{epoch:02d}_{val_loss:.2f}',
-        mode='max', # save model with min val_loss
+        mode='min', # save model with min val_loss
         save_top_k=2, # save two best model based on val_loss
     )
     
@@ -95,7 +95,7 @@ def main():
     parser.add_argument('--num_class', type=int, default=2, help='number of class')    
     parser.add_argument('--fpm', type=int, default=20, help='frame per minute')
     parser.add_argument('--epochs', type=int, default=10, help='num of epochs')
-    parser.add_argument('--batch_size', type=int, default=32, help='num of batch size')    
+    parser.add_argument('--batch_size', type=int, default=2, help='num of batch size')    
     parser.add_argument('--fast_dev_run', type=bool, default=False, help='debugging run')
     parser.add_argument('--comet_api', type=str, default='IFsibHtChMnB2b5FuZzhiMswT', help='comet ml api')
     parser.add_argument('--wandb_api', type=str, default='817aa606c05b35848fbda862607bdc175605121e', help='wandb api')
